@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block linkcss %}
+
+  <link rel="stylesheet" href="{% static 'css/writeblog.css' %}">
+{% endblock %}
+
+{% block content %}
+<div id="mainFormContainer">
+
+  <div id="mainForm" class="container">
+    <h3 style="margin-left: 220px ; color: coral; padding-bottom: 20px;">Edit Your Blog Here</h3>
+    <form method="POST" action="/blog/editblog/{{slug}}" style="max-width:840px; padding-bottom: 20px;" enctype="multipart/form-data">
+      {% csrf_token %}
+      {% bootstrap_form form %}
+      {{form.media}}
+      <label>Select tags For your Blog</label>
+      <br>
+      <input type="hidden" name="author" id="author" value="{{user.username}}">
+      <select multiple data-style="bg-white px-4 py-3 mb-3 shadow-sm " id="selectpickerid" 
+        class="selectpicker w-50">
+        <option>#JavaScript </option>
+        <option>#Python flask </option>
+        <option>#Python </option>
+        <option>#C++ </option>
+        <option>#Java </option>
+        <option>#HTML </option>
+        <option>#Bootstrap </option>
+        <option>#Django </option>
+        <option>#PHP </option>
+      </select><!-- End -->
+      <input id="hiddenSelected" type="hidden" name="tags">
+      <br>
+      <button type="submit" class="btn-sm btn-light">Submit</button>
+    </form>
+  </div>
+</div>
+
+
+
+{% endblock %}
+
+{% block linkjs %}
+<script src="{% static 'js/writeblog.js' %}"></script>
+{% endblock %}

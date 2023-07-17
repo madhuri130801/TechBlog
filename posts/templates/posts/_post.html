@@ -1,0 +1,43 @@
+<div class="card" style="background-color: antiquewhite;">
+<div class="jumbotron" style="background-color: rgb(39, 39, 39);">
+	<h2 style="color:rgb(228, 72, 72);font-size: 23px; text-align:left;">{{ post.message_html|safe }}</h2>
+	<div class="media-body">
+		<strong>--> author: {{ post.user.username }}</strong>
+		<h4 class="media-heading" style="color:rgb(180, 143, 143);font-size: 19px;">
+			<span class="username">->blog handle:<a href="{% url 'posts:for_user' username=post.user.username %}">@{{ post.user.username }}</a></span>
+			<time class="time"><a href="{% url 'posts:single' username=post.user.username pk=post.pk %}">{{ post.created_at }}</a></time>
+			{% if post.group %}
+			<span class="group-name">posted in <a href="#">{{ post.group.name }}</a></span>
+			{% endif %}
+		</h4>
+
+
+
+
+		<div class="media-footer hg">
+			{% if user.is_authenticated and post.user == user and not hide_delete %}
+				<a href="{% url 'posts:delete' pk=post.pk %}" title="delete" class="btn btn-simple">
+					<span class="glyphicon glyphicon-remove text-danger" aria-hidden="true"></span>
+					<span class="text-danger icon-label">Delete</span>
+				</a>
+			{% endif %}
+		</div>
+		<div class="form-inline my-2 my-lg-0" >
+			<form method="POST" action="{% url 'posts:like' post.pk %}">
+				{% csrf_token %}
+				<input type="hidden" name="next" value="{{ request.path }}">
+				<button style="background-color: transparent;color: rgb(197, 158, 158); border: none; box-shadow: none;" type="submit">
+					<img src="/static/images/likeicon.png" width="50px" height="50px">{{ post.likes.all.count }}
+				</button>
+			</form>
+		
+			<form method="POST" action="{% url 'posts:dislike' post.pk %}">
+				{% csrf_token %}
+				<input type="hidden" name="next" value="{{ request.path }}">
+				<button style="background-color: transparent;color: rgb(197, 158, 158); border: none; box-shadow: none;" type="submit">
+				<img src="/static/images/dislikeicon.png" width="40px" height="40px" alt="">	{{ post.dislikes.all.count }}
+				</button>
+			</form>
+		  </div>
+	</div>
+</div>
